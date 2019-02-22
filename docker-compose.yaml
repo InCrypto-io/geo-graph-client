@@ -1,0 +1,12 @@
+
+version: '2'
+
+services:
+  nginx:
+    image: nginx:latest
+    container_name: geo-graph-client
+    ports:
+      - "8000:80"
+    volumes:
+      - ./nginx/nginx.conf:/config/nginx/site-confs/default:rw
+      - ./:/usr/share/nginx/html/
