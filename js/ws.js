@@ -1,20 +1,4 @@
-function wsConnection(ws){
-    ws.onopen = function(evt) {
-
-    };
-    ws.onclose = function(evt) {
-        console.log("CLOSE");
-        ws = null;
-    };
-    ws.onmessage = function(evt) {
-
-    };
-
-    ws.onerror = function(evt) {
-
-    }
-}
-
+var ws = "ws://localhost:3000/";
 function bufferToJson(buffer)
 {
     var enc = new TextDecoder("utf-8");
@@ -25,7 +9,7 @@ function bufferToJson(buffer)
 
 var wsApp = (function(){
     var wsApp = {};
-    var wsUri = "ws://localhost:3000/";
+    var wsUri = ws;
     var websocket;
     wsApp.init = function() {
         websocket = new WebSocket(wsUri);
@@ -50,6 +34,5 @@ var wsApp = (function(){
             console.log("ERROR: " + evt.data);
         };
     };
-
     return wsApp;
 })();
