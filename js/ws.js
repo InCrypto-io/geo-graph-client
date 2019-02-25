@@ -1,4 +1,4 @@
-var ws = "ws://localhost:3000/";
+var ws = "ws://localhost:3030/";
 function bufferToJson(buffer)
 {
     var enc = new TextDecoder("utf-8");
