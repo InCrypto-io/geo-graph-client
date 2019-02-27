@@ -25,7 +25,7 @@ var wsApp = (function(){
         websocket.onmessage = function(evt){
 
             var json, view = new DataView(evt.data);
-            if (view.byteLength == 8){
+            if (view.byteLength == 8 && new Int32Array(evt.data)[1] == 0){
                 websocket.send(0);
             }
             else if (view.byteLength > 8)
