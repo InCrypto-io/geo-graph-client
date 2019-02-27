@@ -32,6 +32,7 @@ var wsApp = (function(){
         };
         websocket.onerror =  function(evt){
             console.log("ERROR: " + evt.data);
+            // console.log("ERROR: " + evt.e);
         };
     };
     return wsApp;
