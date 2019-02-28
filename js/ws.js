@@ -1,4 +1,4 @@
-var ws = "ws://localhost:3030/";
+var ws = "ws://172.17.0.1:3030/";
 function bufferToJson(buffer)
 {
     var enc = new TextDecoder("utf-8");
@@ -17,6 +17,10 @@ var wsApp = (function(){
         websocket.onopen = function(evt) {
             console.log("OPEN");
             setupScene();
+            var timerId = setInterval(function() {
+                websocket.send(0);
+            }, 8000);
+
         };
         websocket.onclose = function(evt){
             console.log("CLOSE");
@@ -26,7 +30,7 @@ var wsApp = (function(){
 
             var json, view = new DataView(evt.data);
             if (view.byteLength == 8 && new Int32Array(evt.data)[1] == 0){
-                websocket.send(0);
+               websocket.send(0);
             }
             else if (view.byteLength > 8)
                 json = bufferToJson(evt.data);
