@@ -101,6 +101,21 @@ function addGlobeDots() {
     groups.globeDots = new THREE.Points(geometry, material);
     groups.globe.add(groups.globeDots);
 
+    //Create text of the element
+    var element = document.createElement('li');
+    var targetNode = data.Trustlines[0];
+
+    element.innerHTML = '<span class="text">' + targetNode['nodeHashFrom'] + '</span>';
+
+    var object = {
+        position: animations.dots.points[targetNode['nodeHashFrom']],
+        element: element
+    };
+    // Add the element to the DOM and add the object to the array
+    list.appendChild(element);
+    elements[0] = object;
+    list.classList.add('active');
+
 }
 
 function createDot(nodeHashFrom, nodeHashTo){

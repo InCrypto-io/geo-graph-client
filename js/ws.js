@@ -6,7 +6,7 @@ function bufferToJson(buffer)
     return JSON.parse(str);
 }
 
-
+var wsStatus;
 var wsApp = (function(){
     var wsApp = {};
     var wsUri = ws;
@@ -16,23 +16,22 @@ var wsApp = (function(){
         websocket.binaryType = 'arraybuffer';
         websocket.onopen = function(evt) {
             console.log("OPEN");
+            wsStatus = 'open';
             setupScene();
             var timerId = setInterval(function() {
                 websocket.send(0);
-            }, 8000);
+            }, 4000);
 
         };
         websocket.onclose = function(evt){
             console.log("CLOSE");
+            wsStatus = 'close';
             websocket = null;
         };
         websocket.onmessage = function(evt){
 
             var json, view = new DataView(evt.data);
-            if (view.byteLength == 8 && new Int32Array(evt.data)[1] == 0){
-               websocket.send(0);
-            }
-            else if (view.byteLength > 8)
+            if (view.byteLength > 8)
                 json = bufferToJson(evt.data);
 
             if(json != undefined) {
@@ -41,7 +40,7 @@ var wsApp = (function(){
         };
         websocket.onerror =  function(evt){
             console.log("ERROR: " + evt.data);
-            // console.log("ERROR: " + evt.e);
+            wsStatus = 'Error';
         };
     };
     return wsApp;

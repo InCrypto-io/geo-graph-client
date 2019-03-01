@@ -24,16 +24,15 @@ else {
 }
 
 function onFocusChange(event) {
-
     var visible = 'visible';
     var hidden = 'hidden';
     var eventMap = {
         focus: visible,
         focusin: visible,
         pageshow: visible,
-        blur: hidden,
-        focusout: hidden,
-        pagehide: hidden
+        blur: visible,
+        focusout: visible,
+        pagehide: visible
     };
 
     event = event || window.event;

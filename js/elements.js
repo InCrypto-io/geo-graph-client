@@ -20,7 +20,7 @@ function createLastElement() {
         };
 
         // Add the element to the DOM and add the object to the array
-        list.appendChild(element);
+        list.appendChild(element)
         elements[target] = object;
 
     };
@@ -35,6 +35,7 @@ function createLastElement() {
         let coordinates = group.children[0]._path[0];
         pushObject(coordinates, key);
     }
+    list.classList.add('active');
 }
 
 function positionElements() {
