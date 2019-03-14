@@ -105,7 +105,8 @@ function manageAction(json){
     if (json.nodeHashFrom != undefined) {
         if(data.Trustlines.length == 0){
             data.Trustlines.push(json);
-            addGlobeDots();
+            createDot(json.nodeHashFrom, json.nodeHashTo);
+            //addGlobeDots();
         }
         else if(!json.op) {
             deleteLine(json);
@@ -128,16 +129,19 @@ function createFifoPayment(name, node, direction) {
     if(data.Payments[name] != undefined) {
         if (data.Payments[name][direction] != undefined) {
             data.Payments[name][direction].push({node});
+            paymentDurations[node.name] = 10;
         } else {
             data.Payments[name][direction] = [];
             data.Payments[name][direction].push({node});
+            paymentDurations[node.name] = 10;
         }
-        addLineDots(name, 1);
+        //addLineDots(name, 1);
     } else {
         data.Payments[name] = [];
         data.Payments[name][direction] = [];
         data.Payments[name][direction].push({node});
-        addLineDots(name, 1);
+        paymentDurations[node.name] = 10;
+        //addLineDots(name, 1);
     }
 }
 

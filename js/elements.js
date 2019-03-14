@@ -11,7 +11,7 @@ function createLastElement() {
         // Create the element
         var element = document.createElement('li');
         var targetNode = data.Trustlines[target];
-
+        element.setAttribute("id",targetNode['nodeHashFrom']);
         element.innerHTML = '<span class="text">' + targetNode['nodeHashFrom'] + '</span>';
 
         var object = {

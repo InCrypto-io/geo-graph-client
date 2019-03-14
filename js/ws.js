@@ -1,4 +1,4 @@
-var ws = "ws://172.17.0.1:3030/";
+var ws = "ws://192.168.1.141:3030/";
 function bufferToJson(buffer)
 {
     var enc = new TextDecoder("utf-8");

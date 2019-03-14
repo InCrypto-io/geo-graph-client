@@ -3,6 +3,7 @@ var paymentFIFO;
 var data = [];
 data['Trustlines'] = [];
 data['Payments'] = [];
+var paymentDurations = [];
 
 // Cache DOM selectors
 var container = document.getElementsByClassName('js-globe')[0];
@@ -47,15 +48,14 @@ var props = {
     dotsAmount: 1, // Amount of dots to generate and animate randomly across the lines
     colours: {
         // Cache the colours
-        globeDots: 'rgb(61, 137, 164)', // No need to use the Three constructor as this value is used for the HTML canvas drawing 'fillStyle' property
-        lines: new THREE.Color('#ffa10b'),
-        lineActive: new THREE.Color('#ff000e'),
-        lineDots: new THREE.Color('#165617')
+        globeDots: 'rgb(252, 233, 3)', // No need to use the Three constructor as this value is used for the HTML canvas drawing 'fillStyle' property
+        lines: new THREE.Color('#787a7e'),
+        lineActive: new THREE.Color('#ffff00'),
+        lineDots: new THREE.Color('#ffff00')
     },
     alphas: {
         // Transparent values of materials
-        globe: 0.4,
-        lines: 0.5
+        lines: 1
     }
 }
 
@@ -76,7 +76,11 @@ var animations = {
         animating: true, // Boolean if the countries are currently being animated
         current: 0, // Animation frames of country elements introduction animation
         total: 120, // Total frames (duration) of the country elements introduction animation
-        selected: null, // Three group object of the currently selected payment lines
+        selected: '', // Three group object of the currently selected payment lines
+        mouse: {
+            x: 0,
+            y:0
+        },
         typeAnimation: 'take', // The direction of animation true - forward, false - back
         index: null, // Index of the country in the data array
         timeout: null, // Timeout object for cycling to the next country
@@ -130,11 +134,9 @@ function setupScene() {
     addControls();
 
     // Render objects
-    addGlobe();
-
-    if (Object.keys(data.Trustlines).length > 0) {
-        addLines();
-    }
+    groups.globe = new THREE.Group();
+    groups.globe.name = 'Globe';
+    groups.main.add(groups.globe);
 
     render();
     animate();
@@ -169,7 +171,7 @@ function addCamera() {
 
 function addControls() {
 
-    camera.controls = new OrbitControls(camera.object, canvas);
+    camera.controls = new OrbitControls(camera.object);
     camera.controls.enableKeys = false;
     camera.controls.enablePan = false;
     camera.controls.enableZoom = true;
@@ -182,7 +184,16 @@ function addControls() {
 
 }
 
+var raycaster = new THREE.Raycaster();
+var mouse = new THREE.Vector2();
 
+function onMouseMove( event ) {
+
+    event.preventDefault();
+
+    mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+    mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+}
 /* INITIALISATION */
 
 if (!window.WebGLRenderingContext) {
@@ -191,4 +202,5 @@ if (!window.WebGLRenderingContext) {
 else {
     //get Data by events
     window.addEventListener("load", wsApp.init, false);
+    document.addEventListener( 'mousemove', onMouseMove, false );
 }

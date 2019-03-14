@@ -1,6 +1,30 @@
 /* RENDERING */
 
 function render() {
+    // update the picking ray with the camera and mouse position
+    raycaster.setFromCamera( mouse, camera.object );
+
+    // calculate objects intersecting the picking ray
+    var intersects = raycaster.intersectObjects( groups.globe.children );
+
+    for ( var i = 0; i < intersects.length; i++ ) {
+        if(intersects[i].object.name!=''){
+            if(animations.nodes.selected != intersects[i].object.name) {
+                if(animations.nodes.selected != '')
+                    document.getElementById(animations.nodes.selected).classList.remove('active');
+                animations.nodes.selected = intersects[i].object.name;
+                animations.nodes.mouse.x = mouse.x;
+                animations.nodes.mouse.y = mouse.y;
+
+                document.getElementById(intersects[i].object.name).classList.add('active');
+            }
+        }
+    }
+
+    if((animations.nodes.mouse.x != mouse.x || animations.nodes.mouse.y != mouse.y) && animations.nodes.selected != ''){
+        document.getElementById(animations.nodes.selected).classList.remove('active');
+        animations.nodes.selected = '';
+    }
     renderer.render(scene, camera.object);
 }
 
@@ -47,23 +71,15 @@ function onFocusChange(event) {
 }
 
 function animate() {
-
+    //
     if (isHidden === false) {
         requestAnimationFrame(animate);
     }
-
-    if (groups.globeDots) {
-        introAnimate();
-    }
-
+    //Check is payments exist in array
     if (Object.keys(data.Payments).length>0) {
         animatePayment();
     }
-
     positionElements();
-
     camera.controls.update();
-
     render();
-
 }
