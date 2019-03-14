@@ -25,8 +25,8 @@ function createDot(nodeHashFrom){
         size: props.globeRadius / 40//120
     });
 
-    x = randomInteger(0, 2050);
-    y = randomInteger(0, 1025);
+    x = randomIntegerX(0,2050);
+    y = randomIntegerY(1025, 2);
 
     // Add the coordinates to a new array for the intro animation
     var result = returnSphericalCoordinates(
@@ -43,8 +43,15 @@ function createDot(nodeHashFrom){
     groups.globe.add(obj);
 }
 
-function randomInteger(min, max) {
+function randomIntegerX(min, max) {
     var rand = min + Math.random() * (max + 1 - min);
     rand = Math.floor(rand);
     return rand;
+}
+
+function randomIntegerY(max, numberRandoms) {
+    let result = 0;
+    for (let i = 0; i < numberRandoms; ++i)
+        result += Math.random() * (max / numberRandoms);
+    return result;
 }

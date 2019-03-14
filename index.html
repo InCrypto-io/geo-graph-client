@@ -10,10 +10,17 @@
     <script type="text/javascript" src="js/libs/THREE.MeshLine.js"></script>
 </head>
 <body>
-<div><h1>GEO Explorer </h1></div>
+<div class="logo">
+    <a class="active"><img src="https://geoprotocol.io/static/media/logo-white.99ded9e0.svg" alt="GEO Protocol" class="geo-header-logo"></a>
+</div>
 <div class="globe js-globe">
     <ul class="globe-list js-list"></ul>
     <canvas class="globe-canvas js-canvas"></canvas>
+    <div class ="geo-data">
+        <p>Total nodes count:<span id="nodeAmount">100</dpsn></p>
+        <p>Total trust lines count:<span id="lineAmount">100</span></p>
+        <p>Last update:<span id="currentTime">100</span></p>
+    </div>
 </div>
 
 <script type="text/javascript" src="js/helper.js"></script>

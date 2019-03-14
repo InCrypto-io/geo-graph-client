@@ -20,6 +20,7 @@ body,
 }
 
 body {
+    background: black;
     cursor: default;
     position: relative;
     width: 100vw;
@@ -222,9 +223,26 @@ body {
     top: 0;
 }
 
-div h1{
+div.logo {
     display: block;
     position: absolute;
     top: 10px;
+    left:10px;
     color:rgb(252, 233, 3);
+}
+div.geo-data {
+    display: block;
+    position: absolute;
+    bottom: 20px;
+    font-size: 12px;
+    left: 10px;
+    color: #FCE903;
+}
+
+div.geo-data > p {
+    padding: 0 20px;
+    float: left;
+}
+div.geo-data > p > span {
+    padding: 0 5px;
 }

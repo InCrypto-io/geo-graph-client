@@ -106,7 +106,17 @@ function manageAction(json){
         if(data.Trustlines.length == 0){
             data.Trustlines.push(json);
             createDot(json.nodeHashFrom, json.nodeHashTo);
-            //addGlobeDots();
+            list = document.getElementsByClassName('js-list')[0];
+            var element = document.createElement('li');
+            element.setAttribute("id",json.nodeHashFrom);
+            element.innerHTML = '<span class="text">' + json.nodeHashFrom + '</span>';
+            list.appendChild(element);
+
+            let object = {
+                position: animations.dots.points[json.nodeHashFrom],
+                element: element
+            };
+            elements[0] = object;
         }
         else if(!json.op) {
             deleteLine(json);

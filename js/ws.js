@@ -29,7 +29,7 @@ var wsApp = (function(){
             websocket = null;
         };
         websocket.onmessage = function(evt){
-
+            animations.lastTime = (new Date()).toLocaleDateString("en-US", {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: "numeric", minute: "2-digit", second:"2-digit"});
             var json, view = new DataView(evt.data);
             if (view.byteLength > 8)
                 json = bufferToJson(evt.data);

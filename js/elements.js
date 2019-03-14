@@ -7,22 +7,26 @@ function createLastElement() {
     if(list === undefined){
         list = document.getElementsByClassName('js-list')[0];
     }
+
     var pushObject = function(coordinates, target) {
-        // Create the element
-        var element = document.createElement('li');
+
         var targetNode = data.Trustlines[target];
-        element.setAttribute("id",targetNode['nodeHashFrom']);
-        element.innerHTML = '<span class="text">' + targetNode['nodeHashFrom'] + '</span>';
+        if (document.getElementById(targetNode['nodeHashFrom']) == undefined){
+            // Create the element
+            var element = document.createElement('li');
 
-        var object = {
-            position: coordinates,
-            element: element
-        };
+            element.setAttribute("id",targetNode['nodeHashFrom']);
+            element.innerHTML = '<span class="text">' + targetNode['nodeHashFrom'] + '</span>';
 
-        // Add the element to the DOM and add the object to the array
-        list.appendChild(element)
-        elements[target] = object;
+            var object = {
+                position: coordinates,
+                element: element
+            };
 
+            // Add the element to the DOM and add the object to the array
+            list.appendChild(element);
+            elements[target] = object;
+        }
     };
 
     var key = data.Trustlines.length - 1;
@@ -36,6 +40,7 @@ function createLastElement() {
         pushObject(coordinates, key);
     }
     list.classList.add('active');
+
 }
 
 function positionElements() {

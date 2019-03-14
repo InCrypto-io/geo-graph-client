@@ -17,6 +17,7 @@ function render() {
                 animations.nodes.mouse.y = mouse.y;
 
                 document.getElementById(intersects[i].object.name).classList.add('active');
+
             }
         }
     }
@@ -25,6 +26,11 @@ function render() {
         document.getElementById(animations.nodes.selected).classList.remove('active');
         animations.nodes.selected = '';
     }
+
+    document.getElementById('nodeAmount').innerHTML = data['Trustlines'].length;
+    document.getElementById('lineAmount').innerHTML = groups.lines.children.length;
+    document.getElementById('currentTime').innerHTML = animations.lastTime;
+
     renderer.render(scene, camera.object);
 }
 

@@ -49,7 +49,7 @@ var props = {
     colours: {
         // Cache the colours
         globeDots: 'rgb(252, 233, 3)', // No need to use the Three constructor as this value is used for the HTML canvas drawing 'fillStyle' property
-        lines: new THREE.Color('#787a7e'),
+        lines: new THREE.Color('#5e6064'),
         lineActive: new THREE.Color('#ffff00'),
         lineDots: new THREE.Color('#ffff00')
     },
@@ -61,6 +61,7 @@ var props = {
 
 // Booleans and values for animations
 var animations = {
+    lastTime: '',
     finishedIntro: false, // Boolean of when the intro animations have finished
     dots: {
         current: 0, // Animation frames of the globe dots introduction animation
