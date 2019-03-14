@@ -224,6 +224,7 @@ body {
 }
 
 div.logo {
+    z-index: 1;
     display: block;
     position: absolute;
     top: 10px;
