@@ -51,7 +51,6 @@ function deleteLine(json) {
 
 function deleteDot(json) {
     let del = true;
-    console.log();
     for(var k in groups.lines.children) {
         if(groups.lines.children[k].nodes.includes(json.nodeHashFrom)
             && groups.lines.children[k].nodes[0] != groups.lines.children[k].nodes[1]) {
@@ -134,8 +133,6 @@ function manageAction(json){
             drawTrustLine(json);
         }
         else if(json.Delete) {
-            console.log(groups.lines.children);
-            console.log(groups.globe.children);
             deleteLine(json);
             deleteDot(json)
         }
