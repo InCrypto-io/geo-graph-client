@@ -22,7 +22,7 @@ body,
 body {
     /* background: black; */
     background-size: cover;
-    background-image: url("../images/background.png");
+    background-image: url("../images/background.jpg");
     cursor: default;
     position: relative;
     width: 100vw;
