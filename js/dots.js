@@ -36,6 +36,7 @@ function createDot(nodeHashFrom){
     var point = new THREE.Vector3(result.x, result.y, result.z);
     geometry.vertices.push(point);
     animations.dots.points[nodeHashFrom] = point;
+    animations.dots.total ++;
 
     var obj = new THREE.Points(geometry, material);
     obj.name = nodeHashFrom;

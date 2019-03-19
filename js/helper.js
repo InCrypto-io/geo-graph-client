@@ -50,15 +50,27 @@ function deleteLine(json) {
 }
 
 function deleteDot(json) {
-    for(var k in groups.globe.children){
-        if(groups.globe.children[k].name == json.nodeHashFrom){
-            groups.globe.children.splice(k, 1);
-            if(isHashInTrustlineData(json.nodeHashFrom)){
-                if (!deleteHashInTrustlineData(json.nodeHashFrom))
-                    console.log('Cant delete from TrustlineData');
+    let del = true;
+    console.log();
+    for(var k in groups.lines.children) {
+        if(groups.lines.children[k].nodes.includes(json.nodeHashFrom)
+            && groups.lines.children[k].nodes[0] != groups.lines.children[k].nodes[1]) {
+            del = false;
+        }
+    }
+
+    if (del){
+        for(var k in groups.globe.children){
+            if(groups.globe.children[k].name == json.nodeHashFrom){
+                groups.globe.children.splice(k, 1);
+                if(isHashInTrustlineData(json.nodeHashFrom)){
+                    if (!deleteHashInTrustlineData(json.nodeHashFrom))
+                        console.log('Cant delete from TrustlineData');
+                }
             }
         }
     }
+
 }
 
 function drawTrustLine(json) {
@@ -85,14 +97,12 @@ function drawTrustLine(json) {
 }
 
 function drawPayment(json) {
-    if(json['paths'].length>1 && json['paths'].length == 2)
-    {
-        addPayment(json.fromNodeHash, json.toNodeHash);
-    }
-    else if(json['paths'].length>1 && json['paths'].length > 2){
+    if(json['paths'].length>0){
         for(var i=0; i<json['paths'].length; i++){
-            if(i>0){
-                addPayment(json['paths'][i-1], json['paths'][i]);
+            for(var j=0;j<json["paths"][i].length;j++) {
+                if(j>0) {
+                    addPayment(json['paths'][i][j-1], json['paths'][i][j]);
+                }
             }
         }
     }
@@ -102,33 +112,36 @@ function drawPayment(json) {
 }
 
 function manageAction(json){
-    if (json.nodeHashFrom != undefined) {
-        if(data.Trustlines.length == 0){
-            data.Trustlines.push(json);
-            createDot(json.nodeHashFrom, json.nodeHashTo);
-            list = document.getElementsByClassName('js-list')[0];
-            var element = document.createElement('li');
-            element.setAttribute("id",json.nodeHashFrom);
-            element.innerHTML = '<span class="text">' + json.nodeHashFrom + '</span>';
-            list.appendChild(element);
-
-            let object = {
-                position: animations.dots.points[json.nodeHashFrom],
-                element: element
-            };
-            elements[0] = object;
+    if (json.paths != undefined)
+    {
+        drawPayment(json);
+    }
+    else if (json.nodeHashFrom != undefined) {
+        if(data.Trustlines.length == 0 && animations.dots.total == 0){
+            //createDot(json.nodeHashFrom, json.nodeHashTo);
+            // list = document.getElementsByClassName('js-list')[0];
+            // var element = document.createElement('li');
+            // element.setAttribute("id",json.nodeHashFrom);
+            // element.innerHTML = '<span class="text">' + json.nodeHashFrom + '</span>';
+            // list.appendChild(element);
+            //
+            // let object = {
+            //     position: animations.dots.points[json.nodeHashFrom],
+            //     element: element
+            // };
+            // elements[0] = object;
+            // positionElements();
+            drawTrustLine(json);
         }
-        else if(!json.op) {
+        else if(json.Delete) {
+            console.log(groups.lines.children);
+            console.log(groups.globe.children);
             deleteLine(json);
             deleteDot(json)
         }
         else {
             drawTrustLine(json);
         }
-    }
-    else if (json.fromNodeHash != undefined)
-    {
-        drawPayment(json);
     }
     else {
         console.log('Error nodeHashFrom is undefined...');
