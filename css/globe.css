@@ -20,7 +20,9 @@ body,
 }
 
 body {
-    background: black;
+    /* background: black; */
+    background-size: cover;
+    background-image: url("../images/background.png");
     cursor: default;
     position: relative;
     width: 100vw;
