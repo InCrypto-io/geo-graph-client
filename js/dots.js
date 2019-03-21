@@ -42,6 +42,7 @@ function createDot(nodeHashFrom){
     obj.name = nodeHashFrom;
     // Add the points to the scene
     groups.globe.add(obj);
+
 }
 
 function randomIntegerX(min, max) {

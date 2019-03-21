@@ -45,6 +45,7 @@ function addNewLine(nodeStart, nodeEnd) {
         group.visible = true;
 
         groups.lines.add(group);
+
     }
     else {
         console.log('Cant create line ...',nodeStart+nodeEnd);

@@ -87,6 +87,9 @@ var animations = {
         timeout: null, // Timeout object for cycling to the next country
         initialDuration: 0, // Initial timeout duration before starting the country cycle
         duration: 0 // Timeout duration between cycling to the next country
+    },
+    lines:{
+        total:0
     }
 };
 

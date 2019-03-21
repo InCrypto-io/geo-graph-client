@@ -21,11 +21,11 @@ function isLineExist(nodeHashFrom, nodeHashTo) {
     return false;
 }
 
-function deleteHashInTrustlineData(nodeHashFrom){
+function deleteHashInTrustlineData(nodeHashFrom, nodeHashTo){
     if (data.Trustlines !== undefined){
         for (let key in data.Trustlines)
         {
-            if (data.Trustlines[key].nodeHashFrom == nodeHashFrom){
+            if (data.Trustlines[key].nodeHashFrom == nodeHashFrom && data.Trustlines[key].nodeHashTo == nodeHashTo){
                 data.Trustlines.splice(key, 1);
                 return true;
             }
@@ -42,34 +42,27 @@ function deleteLine(json) {
         if((groups.lines.children[k].name == (json.nodeHashFrom+json.nodeHashTo)) || (groups.lines.children[k].name == (json.nodeHashTo+json.nodeHashFrom))){
             groups.lines.children.splice(k, 1);
             if(isHashInTrustlineData(json.nodeHashFrom)){
-                if (!deleteHashInTrustlineData(json.nodeHashFrom))
+                console.log(data.Trustlines);
+                if (!deleteHashInTrustlineData(json.nodeHashFrom, json.nodeHashTo)){
                     console.log('Cant delete from TrustlineData');
+                }
             }
         }
     }
 }
 
 function deleteDot(json) {
-    let del = true;
-    for(var k in groups.lines.children) {
-        if(groups.lines.children[k].nodes.includes(json.nodeHashFrom)
-            && groups.lines.children[k].nodes[0] != groups.lines.children[k].nodes[1]) {
-            del = false;
-        }
-    }
-
-    if (del){
-        for(var k in groups.globe.children){
-            if(groups.globe.children[k].name == json.nodeHashFrom){
-                groups.globe.children.splice(k, 1);
-                if(isHashInTrustlineData(json.nodeHashFrom)){
-                    if (!deleteHashInTrustlineData(json.nodeHashFrom))
-                        console.log('Cant delete from TrustlineData');
+    for(var k in groups.globe.children){
+        if(groups.globe.children[k].name == json.nodeHashFrom){
+            groups.globe.children.splice(k, 1);
+            if(isHashInTrustlineData(json.nodeHashFrom)){
+                console.log(data.Trustlines);
+                if (!deleteHashInTrustlineData(json.nodeHashFrom, json.nodeHashTo)){
+                    console.log('Cant delete from TrustlineData');
                 }
             }
         }
     }
-
 }
 
 function drawTrustLine(json) {
@@ -87,6 +80,7 @@ function drawTrustLine(json) {
             console.log('Error nodeHashTo is undefined...');
         }
     } else if(!isLineExist(json.nodeHashFrom, json.nodeHashTo)){
+        data.Trustlines.push(json);
         addNewLine(json.nodeHashFrom, json.nodeHashTo);
         createLastElement();
     }
@@ -133,8 +127,11 @@ function manageAction(json){
             drawTrustLine(json);
         }
         else if(json.Delete) {
-            deleteLine(json);
-            deleteDot(json)
+            if(json.nodeHashFrom == json.nodeHashTo){
+                deleteDot(json);
+            } else {
+                deleteLine(json);
+            }
         }
         else {
             drawTrustLine(json);
@@ -143,6 +140,7 @@ function manageAction(json){
     else {
         console.log('Error nodeHashFrom is undefined...');
     }
+    console.log(data.Trustlines);
 }
 
 function createFifoPayment(name, node, direction) {

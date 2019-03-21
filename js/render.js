@@ -27,8 +27,16 @@ function render() {
         animations.nodes.selected = '';
     }
 
+    let lineAmount = 0;
+    for (let key in data.Trustlines)
+    {
+        if (data.Trustlines[key].nodeHashFrom != data.Trustlines[key].nodeHashTo){
+            lineAmount++;
+        }
+    }
+
     document.getElementById('nodeAmount').innerHTML = groups.globe.children.length;//data['Trustlines'].length;
-    document.getElementById('lineAmount').innerHTML = (groups.lines.children.length-groups.globe.children.length);
+    document.getElementById('lineAmount').innerHTML = lineAmount;
     document.getElementById('currentTime').innerHTML = animations.lastTime;
 
     renderer.render(scene, camera.object);
