@@ -27,8 +27,8 @@ function render() {
         animations.nodes.selected = '';
     }
 
-    document.getElementById('nodeAmount').innerHTML = data['Trustlines'].length;
-    document.getElementById('lineAmount').innerHTML = groups.lines.children.length;
+    document.getElementById('nodeAmount').innerHTML = groups.globe.children.length;//data['Trustlines'].length;
+    document.getElementById('lineAmount').innerHTML = (groups.lines.children.length-groups.globe.children.length);
     document.getElementById('currentTime').innerHTML = animations.lastTime;
 
     renderer.render(scene, camera.object);
