@@ -11,12 +11,12 @@ function createLastElement() {
     var pushObject = function(coordinates, target) {
 
         var targetNode = data.Trustlines[target];
-        if (document.getElementById(targetNode['nodeHashFrom']) == undefined){
+        if (document.getElementById(targetNode['source']) == undefined){
             // Create the element
             var element = document.createElement('li');
 
-            element.setAttribute("id",targetNode['nodeHashFrom']);
-            element.innerHTML = '<span class="text">' + targetNode['nodeHashFrom'] + '</span>';
+            element.setAttribute("id",targetNode['source']);
+            element.innerHTML = '<span class="text">' + targetNode['source'] + '</span>';
 
             var object = {
                 position: coordinates,
@@ -31,7 +31,7 @@ function createLastElement() {
 
     var key = data.Trustlines.length - 1;
 
-    let hash = data.Trustlines[key]['nodeHashFrom']+data.Trustlines[key]['nodeHashTo'];
+    let hash = data.Trustlines[key]['source']+data.Trustlines[key]['destination'];
 
     let group = groups.lines.getObjectByName(hash);
 

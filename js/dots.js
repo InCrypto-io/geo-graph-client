@@ -1,6 +1,6 @@
 /* DOTS */
 
-function createDot(nodeHashFrom){
+function createDot(source){
     var geometry = new THREE.Geometry();
 
     // Make circle
@@ -35,11 +35,11 @@ function createDot(nodeHashFrom){
     );
     var point = new THREE.Vector3(result.x, result.y, result.z);
     geometry.vertices.push(point);
-    animations.dots.points[nodeHashFrom] = point;
+    animations.dots.points[source] = point;
     animations.dots.total ++;
 
     var obj = new THREE.Points(geometry, material);
-    obj.name = nodeHashFrom;
+    obj.name = source;
     // Add the points to the scene
     groups.globe.add(obj);
 

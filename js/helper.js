@@ -1,8 +1,8 @@
-function isHashInTrustlineData(nodeHashFrom){
+function isHashInTrustlineData(source){
     if (data.Trustlines !== undefined){
         for (let key in data.Trustlines)
         {
-            if (data.Trustlines[key].nodeHashFrom == nodeHashFrom)
+            if (data.Trustlines[key].source == source)
                 return true;
         }
         return false;
@@ -12,20 +12,20 @@ function isHashInTrustlineData(nodeHashFrom){
     }
 }
 
-function isLineExist(nodeHashFrom, nodeHashTo) {
+function isLineExist(source, destination) {
     for(var k in groups.lines.children){
-        if((groups.lines.children[k].name == (nodeHashFrom+nodeHashTo)) || (groups.lines.children[k].name == (nodeHashTo+nodeHashFrom))){
+        if((groups.lines.children[k].name == (source+destination)) || (groups.lines.children[k].name == (destination+source))){
            return true;
         }
     }
     return false;
 }
 
-function deleteHashInTrustlineData(nodeHashFrom, nodeHashTo){
+function deleteHashInTrustlineData(source, destination){
     if (data.Trustlines !== undefined){
         for (let key in data.Trustlines)
         {
-            if (data.Trustlines[key].nodeHashFrom == nodeHashFrom && data.Trustlines[key].nodeHashTo == nodeHashTo){
+            if (data.Trustlines[key].source == source && data.Trustlines[key].destination == destination){
                 data.Trustlines.splice(key, 1);
                 return true;
             }
@@ -39,11 +39,11 @@ function deleteHashInTrustlineData(nodeHashFrom, nodeHashTo){
 
 function deleteLine(json) {
     for(var k in groups.lines.children){
-        if((groups.lines.children[k].name == (json.nodeHashFrom+json.nodeHashTo)) || (groups.lines.children[k].name == (json.nodeHashTo+json.nodeHashFrom))){
+        if((groups.lines.children[k].name == (json.source+json.destination)) || (groups.lines.children[k].name == (json.destination+json.source))){
             groups.lines.children.splice(k, 1);
-            if(isHashInTrustlineData(json.nodeHashFrom)){
+            if(isHashInTrustlineData(json.source)){
                 console.log(data.Trustlines);
-                if (!deleteHashInTrustlineData(json.nodeHashFrom, json.nodeHashTo)){
+                if (!deleteHashInTrustlineData(json.source, json.destination)){
                     console.log('Cant delete from TrustlineData');
                 }
             }
@@ -53,11 +53,11 @@ function deleteLine(json) {
 
 function deleteDot(json) {
     for(var k in groups.globe.children){
-        if(groups.globe.children[k].name == json.nodeHashFrom){
+        if(groups.globe.children[k].name == json.source){
             groups.globe.children.splice(k, 1);
-            if(isHashInTrustlineData(json.nodeHashFrom)){
+            if(isHashInTrustlineData(json.source)){
                 console.log(data.Trustlines);
-                if (!deleteHashInTrustlineData(json.nodeHashFrom, json.nodeHashTo)){
+                if (!deleteHashInTrustlineData(json.source, json.destination)){
                     console.log('Cant delete from TrustlineData');
                 }
             }
@@ -66,22 +66,22 @@ function deleteDot(json) {
 }
 
 function drawTrustLine(json) {
-    if(!isHashInTrustlineData(json.nodeHashFrom)) {
+    if(!isHashInTrustlineData(json.source)) {
         data.Trustlines.push(json);
-        createDot(json.nodeHashFrom, json.nodeHashTo);
-        if (json.nodeHashTo != undefined) {
-            if (!isLineExist(json.nodeHashFrom, json.nodeHashTo)) {
-                addNewLine(json.nodeHashFrom, json.nodeHashTo);
+        createDot(json.source, json.destination);
+        if (json.destination != undefined) {
+            if (!isLineExist(json.source, json.destination)) {
+                addNewLine(json.source, json.destination);
                 createLastElement();
             } else {
                 console.log('Warning #10 line is exist...');
             }
         } else {
-            console.log('Error nodeHashTo is undefined...');
+            console.log('Error destination is undefined...');
         }
-    } else if(!isLineExist(json.nodeHashFrom, json.nodeHashTo)){
+    } else if(!isLineExist(json.source, json.destination)){
         data.Trustlines.push(json);
-        addNewLine(json.nodeHashFrom, json.nodeHashTo);
+        addNewLine(json.source, json.destination);
         createLastElement();
     }
     else {
@@ -109,17 +109,17 @@ function manageAction(json){
     {
         drawPayment(json);
     }
-    else if (json.nodeHashFrom != undefined) {
+    else if (json.source != undefined) {
         if(data.Trustlines.length == 0 && animations.dots.total == 0){
-            //createDot(json.nodeHashFrom, json.nodeHashTo);
+            //createDot(json.source, json.destination);
             // list = document.getElementsByClassName('js-list')[0];
             // var element = document.createElement('li');
-            // element.setAttribute("id",json.nodeHashFrom);
-            // element.innerHTML = '<span class="text">' + json.nodeHashFrom + '</span>';
+            // element.setAttribute("id",json.source);
+            // element.innerHTML = '<span class="text">' + json.source + '</span>';
             // list.appendChild(element);
             //
             // let object = {
-            //     position: animations.dots.points[json.nodeHashFrom],
+            //     position: animations.dots.points[json.source],
             //     element: element
             // };
             // elements[0] = object;
@@ -127,7 +127,7 @@ function manageAction(json){
             drawTrustLine(json);
         }
         else if(json.Delete) {
-            if(json.nodeHashFrom == json.nodeHashTo){
+            if(json.source == json.destination){
                 deleteDot(json);
             } else {
                 deleteLine(json);
@@ -138,7 +138,7 @@ function manageAction(json){
         }
     }
     else {
-        console.log('Error nodeHashFrom is undefined...');
+        console.log('Error source is undefined...');
     }
     console.log(data.Trustlines);
 }

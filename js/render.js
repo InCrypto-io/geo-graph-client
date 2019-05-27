@@ -30,7 +30,7 @@ function render() {
     let lineAmount = 0;
     for (let key in data.Trustlines)
     {
-        if (data.Trustlines[key].nodeHashFrom != data.Trustlines[key].nodeHashTo){
+        if (data.Trustlines[key].source != data.Trustlines[key].destination){
             lineAmount++;
         }
     }
