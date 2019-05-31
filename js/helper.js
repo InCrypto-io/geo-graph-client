@@ -104,12 +104,51 @@ function drawPayment(json) {
     }
 }
 
+
+function repackJson(json){
+    if (json.hash == undefined) return json;
+    var obj = [];
+    if (json.hash != undefined && json.outgoing_tls != undefined){
+        
+        for (let i=0;i< json.outgoing_tls.length;i++){
+            let a= {
+                source: json.hash,
+                destination:json.outgoing_tls[i].contractor,
+                equivalent:json.outgoing_tls[i].equivalent_id
+            }
+            obj.push(a); 
+        }
+        return obj;
+        }
+        
+        if (json.hash != undefined){
+            let a = {
+                source: json.hash,
+                destination: json.hash,
+            }
+            obj.push(a)
+            return obj;
+        }   
+    }
+
 function manageAction(json){
+    var list=[];
+    let res = repackJson(json);
+    if (!Array.isArray(res)){
+        list[0]=res;
+    }else{
+        list.push(...res);
+    }
+
+    
+
+    list.forEach(element => {
+        
     if (json.paths != undefined)
     {
         drawPayment(json);
     }
-    else if (json.source != undefined) {
+    else if (element.source != undefined) {
         if(data.Trustlines.length == 0 && animations.dots.total == 0){
             //createDot(json.source, json.destination);
             // list = document.getElementsByClassName('js-list')[0];
@@ -124,23 +163,25 @@ function manageAction(json){
             // };
             // elements[0] = object;
             // positionElements();
-            drawTrustLine(json);
+            drawTrustLine(element);
         }
-        else if(json.Delete) {
-            if(json.source == json.destination){
-                deleteDot(json);
+        else if(element.Delete) {
+            if(element.source == element.destination){
+                deleteDot(element);
             } else {
-                deleteLine(json);
+                deleteLine(element);
             }
         }
         else {
-            drawTrustLine(json);
+            drawTrustLine(element);
         }
     }
     else {
         console.log('Error source is undefined...');
     }
-    console.log(data.Trustlines);
+    //console.log(data.Trustlines);
+    });
+   
 }
 
 function createFifoPayment(name, node, direction) {
